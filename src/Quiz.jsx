@@ -5,14 +5,36 @@ import Pages from "./components/QuizStep/Pages";
 
 function Quiz() {
   const [currentStep, setStep] = useState(0);
-  const [steps] = useState(["Categorias", "Páginas", "Test"]);
+  const [steps] = useState(["Categorias", "Páginas"]);
+  const [values, setValues] = useState({
+    categories: [],
+    pages: 50,
+  });
 
   return (
     <div className="flex flex-col">
       <QuizController currentStep={currentStep} steps={steps} />
       <div className="items-center bg-gray-200 h-full p-5 pb-14">
-        {currentStep === 0 && <Categories />}
-        {currentStep === 1 && <Pages />}
+        {currentStep === 0 && (
+          <Categories
+            setValue={(value) => {
+              setValues({
+                ...values,
+                categories: value,
+              });
+            }}
+          />
+        )}
+        {currentStep === 1 && (
+          <Pages
+            setValue={(value) => {
+              setValues({
+                ...values,
+                pages: value,
+              });
+            }}
+          />
+        )}
       </div>
 
       <div className="bg-sky-500 p-4 w-full">

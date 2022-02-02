@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Pages = () => {
+const Pages = ({ setValue }) => {
   const [pages, setPages] = useState(50);
 
+  useEffect(() => {
+    setValue(pages);
+  }, [pages]);
+
   return (
-    <div class="container mx-auto mt-8">
+    <div className="container mx-auto mt-8">
       <h1 className="text-center font-bold text-3xl">Páginas</h1>
       <h3 className="text-center font-500 text-md mt-2">
         Escolha o seu limite de páginas
@@ -13,7 +17,7 @@ const Pages = () => {
       <div className="mt-8">
         <h4
           for="customRange1"
-          class="text-center font-500 text-md font-bold form-label"
+          className="text-center font-500 text-md font-bold form-label"
         >
           até {pages} páginas {pages === "1000" && "ou mais"}
         </h4>

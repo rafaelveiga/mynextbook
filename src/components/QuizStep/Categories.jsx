@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Categories = () => {
-  const [categories, setCategories] = useState([
+const Categories = ({ setValue }) => {
+  const [categories] = useState([
     "Artes",
     "Biografia",
     "Ciências",
@@ -16,6 +16,10 @@ const Categories = () => {
   ]);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+  useEffect(() => {
+    setValue(selectedCategories);
+  }, [selectedCategories]);
 
   return (
     <div className="container mx-auto mt-8">
@@ -33,10 +37,15 @@ const Categories = () => {
                 setSelectedCategories(
                   selectedCategories.filter(
                     (selectedCategory) => selectedCategory !== category
-                  )
+                  ),
+                  () => {
+                    setValue(selectedCategories);
+                  }
                 );
               } else {
-                setSelectedCategories([...selectedCategories, category]);
+                setSelectedCategories([...selectedCategories, category], () => {
+                  setValue(selectedCategories);
+                });
               }
             }}
             className={`

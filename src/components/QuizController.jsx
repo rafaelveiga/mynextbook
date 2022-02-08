@@ -5,7 +5,7 @@ const QuizController = ({ steps, currentStep }) => {
     <div className="bg-sky-500 p-4 text-white">
       <div className="container mx-auto flex">
         {steps.map((step, index) => (
-          <Fragment key={step}>
+          <Fragment key={step.parameter}>
             <div className="flex flex-col items-center justify-center">
               <div
                 className={`
@@ -35,7 +35,7 @@ const QuizController = ({ steps, currentStep }) => {
                   ${currentStep !== index && "opacity-50"}
                 `}
               >
-                {step}
+                {step.parameter}
               </span>
             </div>
             {index !== steps.length - 1 && (

@@ -19,7 +19,7 @@ function Quiz() {
   }, [""]);
 
   useEffect(() => {
-    if (parameters && parameters.length) {
+    if (parameters?.length) {
       fetch(`${API_BASE_URL}/descriptors/${parameters[currentStep].id}`)
         .then((response) => response.json())
         .then((data) => {
@@ -70,7 +70,7 @@ function Quiz() {
           <button
             onClick={() => setStep(currentStep + 1)}
             class={`bg-gray-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded ${
-              currentStep === parameters.data.length - 1 && "opacity-50"
+              currentStep === parameters.data?.length - 1 && "opacity-50"
             }`}
           >
             Próximo

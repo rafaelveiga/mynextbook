@@ -24,6 +24,7 @@ const Pages = ({ setValue }) => {
         <input
           value={pages}
           onChange={(e) => setPages(e.target.value)}
+          onDrag={(e) => setPages(e.target.value)}
           type="range"
           step="50"
           min="50"

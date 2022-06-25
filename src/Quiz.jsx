@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
 import QuizController from "./components/QuizController";
 import Categories from "./components/QuizStep/Categories";
 import Pages from "./components/QuizStep/Pages";
-import useFetch from "./shared/hooks/useFetch";
-import { API_BASE_URL } from "./utils/constants";
+import { GET_PARAMETERS } from "./shared/queries";
 
 function Quiz() {
   const [currentStep, setStep] = useState(0);
@@ -12,44 +12,33 @@ function Quiz() {
     pages: 50,
   });
 
-  const [parameters, getParameters] = useFetch(`${API_BASE_URL}/parameters`);
-
-  useEffect(() => {
-    getParameters();
-  }, [""]);
-
-  useEffect(() => {
-    if (parameters?.length) {
-      fetch(`${API_BASE_URL}/descriptors/${parameters[currentStep].id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
-    }
-  }, [currentStep, parameters]);
+  const parameters = useQuery(GET_PARAMETERS);
 
   return (
     <div className="flex flex-col">
-      {!parameters.isLoading && (
-        <QuizController currentStep={currentStep} steps={parameters.data} />
+      {!parameters.loading && (
+        <QuizController
+          currentStep={currentStep}
+          steps={parameters.data.parameters}
+        />
       )}
       <div className="items-center bg-gray-200 h-full p-5 pb-14">
         {currentStep === 0 && (
-          <Categories
-            setValue={(value) => {
-              setValues({
-                ...values,
-                categories: value,
-              });
-            }}
-          />
-        )}
-        {currentStep === 1 && (
           <Pages
             setValue={(value) => {
               setValues({
                 ...values,
                 pages: value,
+              });
+            }}
+          />
+        )}
+        {currentStep === 1 && (
+          <Categories
+            setValue={(value) => {
+              setValues({
+                ...values,
+                categories: value,
               });
             }}
           />

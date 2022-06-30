@@ -1,18 +1,33 @@
 import { useQuery } from "@apollo/client";
-import { useState } from "react";
-import QuizController from "./components/QuizController";
-import Categories from "./components/QuizStep/Categories";
-import Pages from "./components/QuizStep/Pages";
-import { GET_PARAMETERS } from "./shared/queries";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import QuizController from "../components/QuizController";
+import Categories from "../components/QuizStep/Categories";
+import Pages from "../components/QuizStep/Pages";
+import { GET_PARAMETERS } from "../shared/queries";
 
 function Quiz() {
   const [currentStep, setStep] = useState(0);
   const [values, setValues] = useState({
     categories: [],
-    pages: 50,
+    "total-pages": 50,
   });
-
   const parameters = useQuery(GET_PARAMETERS);
+
+  const generatePageUrlFromValues = (values) => {
+    console.log(values);
+
+    const result = Object.keys(values).reduce((acc, key, index, array) => {
+      if (values[key] !== "") {
+        acc += `${key}=${
+          values[key].join ? values[key].join(",") : values[key]
+        }`;
+      }
+      return index === array.length - 1 ? acc : `${acc}&`;
+    }, "?");
+
+    return result;
+  };
 
   return (
     <div className="flex flex-col">
@@ -28,7 +43,7 @@ function Quiz() {
             setValue={(value) => {
               setValues({
                 ...values,
-                pages: value,
+                "total-pages": value,
               });
             }}
           />
@@ -56,6 +71,7 @@ function Quiz() {
           >
             Anterior
           </button>
+
           <button
             onClick={() => setStep(currentStep + 1)}
             class={`bg-gray-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded ${
@@ -64,6 +80,20 @@ function Quiz() {
           >
             Próximo
           </button>
+
+          {currentStep === parameters.data?.parameters.length - 1 && (
+            <Link to={`/results${generatePageUrlFromValues(values)}`}>
+              <button
+                onClick={() => {
+                  console.log(values);
+                  generatePageUrlFromValues(values);
+                }}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Enviar
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

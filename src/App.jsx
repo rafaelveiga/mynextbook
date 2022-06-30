@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import Home from "./Home";
-import Quiz from "./Quiz";
+import Home from "./pages/Home";
+import Quiz from "./pages/Quiz";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="quiz" element={<Quiz />} />
+          <Route path="results" element={<SearchResults />} />
         </Routes>
       </BrowserRouter>
     </div>
